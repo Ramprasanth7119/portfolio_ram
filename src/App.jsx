@@ -1,76 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import "./App.css";
 
-import Navbar from "./components/Navbar/Navbar";
-import Sidebar from "./components/Sidebar/Sidebar";
-
-import Home from "./components/Home/Home";
-import About from "./components/About/About";
- import Skills from "./components/Skills/Skills";
-// import Projects from "./components/Projects/Projects";
-// import Blog from "./components/Blog/Blog";
-
-import { Routes, Route } from "react-router-dom";
-import Img from '../src/assets/Images/home.png';
+// Dynamically import components
+const Navbar = React.lazy(() => import("./components/Navbar/Navbar"));
+const Sidebar = React.lazy(() => import("./components/Sidebar/Sidebar"));
+const Home = React.lazy(() => import("./components/Home/Home"));
+const About = React.lazy(() => import("./components/About/About"));
+const Skills = React.lazy(() => import("./components/Skills/Skills"));
 
 function App() {
   const [isopen, setisopen] = useState(false);
+
+  // Toggle function for opening/closing the sidebar
   const toggle = () => {
     setisopen(!isopen);
   };
 
-  const projects = [
-    {
-      title: "Portfolio Website",
-      description: "A personal portfolio website showcasing my work and skills.",
-      image: Img,
-      githubLink: "https://github.com/Ramprasanth7119",
-      liveLink: "https://myportfolio.com",
-      stack: ["React", "CSS", "JavaScript"]
-    },
-    {
-      title: "E-commerce App",
-      description: "A full-stack e-commerce application with payment gateway integration.",
-      image: Img,
-      githubLink: "https://github.com/mygithub/e-commerce-app",
-      liveLink: "https://ecommerceapp.com",
-      stack: ["React", "Node.js", "MongoDB", "Express"]
-    },
-    {
-      title: "E-commerce App",
-      description: "A full-stack e-commerce application with payment gateway integration.",
-      image: Img,
-      githubLink: "https://github.com/mygithub/e-commerce-app",
-      liveLink: "https://ecommerceapp.com",
-      stack: ["React", "Node.js", "MongoDB", "Express"]
-    },
-    
-  ];
-
-  // return (
-  //   <>
-  //     <Navbar toggle={toggle} />
-  //     <Sidebar isopen={isopen} toggle={toggle} />
-  //     <Routes>
-  //       <Route path="/" element={<Home />}/>
-  //       <Route path="/about" element={<About />} />
-  //       <Route path="/skills" element={<Skills/>}/>
-  //       <Route path="/projects" element={<Projects  projects={projects}/>}/>
-  //       <Route path="/blog" element={<Blog/>}/>
-  //     </Routes>
-  //   </>
-  // );
   return (
     <>
-      <Navbar toggle={toggle} />
-      <Sidebar isopen={isopen} toggle={toggle} />
-      <Home/>
-      {/* <Projects projects={projects}/> */}
-      <Skills/>
-      <About/>
+      {/* Suspense is used to handle loading state while the components are being loaded */}
+      <Suspense fallback={<div>Loading Navbar...</div>}>
+        <Navbar toggle={toggle} />
+      </Suspense>
+
+      <Suspense fallback={<div>Loading Sidebar...</div>}>
+        <Sidebar isopen={isopen} toggle={toggle} />
+      </Suspense>
+
+      {/* Main content sections */}
+      <Suspense fallback={<div>Loading Home...</div>}>
+        <Home />
+      </Suspense>
+
+      <Suspense fallback={<div>Loading Skills...</div>}>
+        <Skills />
+      </Suspense>
+
+      <Suspense fallback={<div>Loading About...</div>}>
+        <About />
+      </Suspense>
     </>
   );
 }
 
 export default App;
-
