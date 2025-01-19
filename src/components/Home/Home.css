@@ -1,0 +1,108 @@
+/* Base container for the whole section */
+.home-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    flex-wrap: wrap; /* Push content below the navbar for larger screens */
+    padding-top: 70px; /* Offset for fixed navbar height */
+  }
+  
+  /* Text container holding the typed text and the quote */
+  .text-container {
+    margin-left: 50px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  /* Glassmorphism effect on the typed text */
+  .typing-text {
+    font-family: 'Courier New', Courier, monospace;
+    color: #e0e0e0; /* Light text color */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+    padding: 10px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(8px); /* Glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Soft border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    margin-bottom: 20px;
+  }
+  
+  /* Quote styling */
+  .quote {
+    font-size: 1.2em;
+    color: #ddd; /* Light grey color for the quote */
+    margin-top: 10px;
+    text-align: left;
+    max-width: 600px;
+  }
+  
+  /* Image container, centering the image */
+  .image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+  }
+  
+  /* Image styling */
+  .painting-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 80vh;
+  }
+  
+  /* Media Query for mobile responsiveness */
+  @media (max-width: 768px) {
+    /* Overall layout adjustments */
+    .home-container {
+      flex-direction: column; /* Stack elements vertically */
+      align-items: center;
+      padding: 10px; /* Reduce padding for smaller screens */
+      height: auto; /* Let height adjust to content */
+      margin-top: 0; /* Remove margin-top for mobile */
+      padding-top: 70px; /* Ensure content starts below navbar */
+    }
+  
+    /* Center-align text and adjust spacing */
+    .text-container {
+      align-items: center; /* Center align content */
+      text-align: center;
+      margin: 20px 0; /* Add spacing around text */
+      margin-left: 0; /* Remove left margin on mobile */
+    }
+  
+    /* Ensure the typing effect box looks good */
+    .typing-text {
+      font-size: 1rem; /* Adjust font size for readability */
+      padding: 8px 15px; /* Reduce padding */
+      margin-bottom: 15px; /* Adjust spacing below */
+    }
+  
+    /* Quote styling for better readability */
+    .quote {
+      font-size: 1rem; /* Slightly smaller font size */
+      max-width: 90%; /* Reduce max width to fit smaller screens */
+    }
+  
+    /* Adjust image container */
+    .image-container {
+      margin-top: 20px; /* Space between text and image */
+      justify-content: center;
+      align-items: center;
+      padding-left: 0; /* Remove left padding */
+    }
+  
+    /* Scale image properly for mobile */
+    .painting-image {
+      max-width: 90%; /* Reduce max width */
+      max-height: 50vh; /* Adjust height for smaller screens */
+    }
+  }
+  
+  
