@@ -16,6 +16,9 @@ export default defineConfig({
           if (id.includes('node_modules/framer-motion')) {
             return 'framer-motion'; // Vendor chunk for Framer Motion
           }
+          if (id.includes('node_modules/three')) {
+            return 'three'; // Vendor chunk for Three.js
+          }
         },
       },
     },

@@ -11,32 +11,37 @@ const Skills = React.lazy(() => import("./components/Skills/Skills"));
 function App() {
   const [isopen, setisopen] = useState(false);
 
-  // Toggle function for opening/closing the sidebar
   const toggle = () => {
     setisopen(!isopen);
   };
 
+  const Loading = () => (
+    <div className="loader-container">
+      <div className="spinner"></div>
+      Loading...
+    </div>
+  );
+
   return (
     <>
-      {/* Suspense is used to handle loading state while the components are being loaded */}
-      <Suspense fallback={<div>Loading Navbar...</div>}>
+      {/* Suspense with a single loading spinner */}
+      <Suspense fallback={<Loading />}>
         <Navbar toggle={toggle} />
       </Suspense>
 
-      <Suspense fallback={<div>Loading Sidebar...</div>}>
+      <Suspense fallback={<Loading />}>
         <Sidebar isopen={isopen} toggle={toggle} />
       </Suspense>
 
-      {/* Main content sections */}
-      <Suspense fallback={<div>Loading Home...</div>}>
+      <Suspense fallback={<Loading />}>
         <Home />
       </Suspense>
 
-      <Suspense fallback={<div>Loading Skills...</div>}>
+      <Suspense fallback={<Loading />}>
         <Skills />
       </Suspense>
 
-      <Suspense fallback={<div>Loading About...</div>}>
+      <Suspense fallback={<Loading />}>
         <About />
       </Suspense>
     </>
