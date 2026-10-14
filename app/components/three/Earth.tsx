@@ -1,4 +1,5 @@
 'use client'
+import { disableShaderErrorCheck } from './glSetup'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useRef, useMemo } from 'react'
 import * as THREE from 'three'
@@ -61,7 +62,7 @@ function GlobeMesh() {
 
 export default function Earth() {
   return (
-    <Canvas camera={{ position: [0, 0, 6], fov: 50 }} dpr={[1, 2]}>
+    <Canvas onCreated={disableShaderErrorCheck} camera={{ position: [0, 0, 6], fov: 50 }} dpr={[1, 2]}>
       <ambientLight intensity={0.3} />
       <directionalLight position={[5, 3, 5]} intensity={1} color="#00D4FF" />
       <pointLight position={[-5, -3, -5]} intensity={0.5} color="#7C3AED" />

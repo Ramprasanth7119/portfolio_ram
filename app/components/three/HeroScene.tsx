@@ -1,4 +1,5 @@
 'use client'
+import { disableShaderErrorCheck } from './glSetup'
 import { Canvas } from '@react-three/fiber'
 import { useRef, useEffect } from 'react'
 import ParticleSphere from './ParticleSphere'
@@ -16,7 +17,7 @@ export default function HeroScene() {
   }, [])
 
   return (
-    <Canvas
+    <Canvas onCreated={disableShaderErrorCheck}
       camera={{ position: [0, 0, 5.5], fov: 60 }}
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}

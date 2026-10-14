@@ -1,4 +1,5 @@
 'use client'
+import { disableShaderErrorCheck } from './glSetup'
 import { Canvas, useFrame } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
 import { useRef, useMemo, useState } from 'react'
@@ -12,27 +13,30 @@ interface Skill {
 }
 
 const SKILLS: Skill[] = [
-  { name: 'Java', color: '#f89820', category: 'Programming' },
-  { name: 'Python', color: '#3776AB', category: 'Programming' },
-  { name: 'C', color: '#A8B9CC', category: 'Programming' },
-  { name: 'HTML5', color: '#E34F26', category: 'Frontend' },
-  { name: 'CSS3', color: '#1572B6', category: 'Frontend' },
-  { name: 'JavaScript', color: '#F7DF1E', category: 'Frontend' },
-  { name: 'TypeScript', color: '#3178C6', category: 'Frontend' },
+  { name: 'Java', color: '#f89820', category: 'Languages' },
+  { name: 'Python', color: '#3776AB', category: 'Languages' },
+  { name: 'C', color: '#A8B9CC', category: 'Languages' },
+  { name: 'JavaScript', color: '#F7DF1E', category: 'Languages' },
+  { name: 'TypeScript', color: '#3178C6', category: 'Languages' },
   { name: 'React', color: '#61DAFB', category: 'Frontend' },
   { name: 'Next.js', color: '#ffffff', category: 'Frontend' },
+  { name: 'HTML5', color: '#E34F26', category: 'Frontend' },
+  { name: 'CSS3', color: '#1572B6', category: 'Frontend' },
+  { name: 'Spring Boot', color: '#6DB33F', category: 'Backend' },
+  { name: 'NestJS', color: '#E0234E', category: 'Backend' },
   { name: 'Node.js', color: '#339933', category: 'Backend' },
   { name: 'Express', color: '#aaaaaa', category: 'Backend' },
-  { name: 'Spring Boot', color: '#6DB33F', category: 'Backend' },
-  { name: 'SQL', color: '#4479A1', category: 'Database' },
+  { name: 'PostgreSQL', color: '#4169E1', category: 'Database' },
+  { name: 'MySQL', color: '#4479A1', category: 'Database' },
   { name: 'MongoDB', color: '#47A248', category: 'Database' },
   { name: 'Elasticsearch', color: '#FEC514', category: 'Database' },
+  { name: 'JUnit', color: '#25A162', category: 'Tools' },
+  { name: 'Vitest', color: '#6E9F18', category: 'Tools' },
   { name: 'Git', color: '#F05032', category: 'Tools' },
-  { name: 'GitHub', color: '#ffffff', category: 'Tools' },
+  { name: 'GitHub Actions', color: '#2088FF', category: 'Tools' },
   { name: 'Docker', color: '#2496ED', category: 'Tools' },
+  { name: 'Prisma', color: '#5A67D8', category: 'Tools' },
   { name: 'Postman', color: '#FF6C37', category: 'Tools' },
-  { name: 'Figma', color: '#F24E1E', category: 'Tools' },
-  { name: 'Apps Script', color: '#4285F4', category: 'Tools' },
 ]
 
 interface SkillNodeProps {
@@ -140,7 +144,7 @@ function Galaxy() {
 
 export default function SkillsGalaxy() {
   return (
-    <Canvas camera={{ position: [0, 0, 7], fov: 55 }} dpr={[1, 2]}>
+    <Canvas onCreated={disableShaderErrorCheck} camera={{ position: [0, 0, 7], fov: 55 }} dpr={[1, 2]}>
       <ambientLight intensity={0.4} />
       <pointLight position={[10, 10, 10]} intensity={1.2} color="#00D4FF" />
       <pointLight position={[-10, -10, -10]} intensity={0.8} color="#7C3AED" />

@@ -1,4 +1,5 @@
 'use client'
+import { disableShaderErrorCheck } from './glSetup'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useRef, useMemo } from 'react'
 import * as THREE from 'three'
@@ -50,7 +51,7 @@ function Stars() {
 export default function Starfield() {
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none">
-      <Canvas 
+      <Canvas onCreated={disableShaderErrorCheck} 
         camera={{ position: [0, 0, 75], fov: 75 }} 
         dpr={[1, 1.5]} 
         gl={{ alpha: true, antialias: false }}

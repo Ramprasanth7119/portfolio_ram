@@ -7,13 +7,13 @@ const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' })
 
 export const metadata: Metadata = {
-  title: 'Ramprasanth Sakthivel | Software Developer Portfolio',
-  description: 'Software Developer skilled in MERN Stack, Spring Boot, Next.js, Java, and modern web technologies.',
-  keywords: ['Ramprasanth Sakthivel', 'Software Developer', 'MERN Stack', 'Spring Boot', 'Next.js', 'Full Stack Engineer', 'Java Developer'],
+  title: 'Ramprasanth Sakthivel | Java Backend & Full-Stack Developer',
+  description: 'Full-stack developer focused on Java backends, building REST APIs and web apps with Spring Boot, NestJS, Next.js and React.js.',
+  keywords: ['Ramprasanth Sakthivel', 'Java Backend Developer', 'Full Stack Developer', 'Spring Boot', 'NestJS', 'Next.js', 'React.js'],
   authors: [{ name: 'Ramprasanth Sakthivel' }],
   openGraph: {
-    title: 'Ramprasanth Sakthivel | Software Developer Portfolio',
-    description: 'Software Developer skilled in MERN Stack, Spring Boot, Next.js, Java, and modern web technologies.',
+    title: 'Ramprasanth Sakthivel | Java Backend & Full-Stack Developer',
+    description: 'Full-stack developer focused on Java backends, building REST APIs and web apps with Spring Boot, NestJS, Next.js and React.js.',
     type: 'website',
   },
 }

@@ -18,6 +18,14 @@ const SkillsGalaxy = dynamic(() => import('./components/three/SkillsGalaxy'), { 
 const Earth = dynamic(() => import('./components/three/Earth'), { ssr: false })
 const FloatingShapes = dynamic(() => import('./components/three/FloatingShapes'), { ssr: false })
 
+// Mounts a 3D canvas only while it is near the viewport, so the page never holds more
+// WebGL contexts than the browser allows (the oldest one gets dropped otherwise).
+function WhenVisible({ children, className = 'w-full h-full' }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { margin: '300px 0px' })
+  return <div ref={ref} className={className}>{inView && children}</div>
+}
+
 // ----------------- LOADING SCREEN -----------------
 function LoadingScreen({ onDone }) {
   const [progress, setProgress] = useState(0)
@@ -194,7 +202,7 @@ function MagneticButton({ children, className = '', as = 'button', ...props }) {
 
 // ----------------- HERO -----------------
 function Hero() {
-  const roles = ['Software Developer', 'Full Stack Engineer', 'Problem Solver', 'Tech Explorer']
+  const roles = ['Java Backend Developer', 'Full-Stack Developer', 'Spring Boot · NestJS', 'Next.js · React.js']
   const [idx, setIdx] = useState(0)
   useEffect(() => {
     const i = setInterval(() => setIdx(p => (p + 1) % roles.length), 2200)
@@ -220,7 +228,7 @@ function Hero() {
         transition={{ delay: 1, duration: 0.8 }}
         className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 flex-col gap-3 z-10"
       >
-        {['MERN', 'Spring Boot', 'Next.js', 'Java'].map((t, i) => (
+        {['Java', 'Spring Boot', 'NestJS', 'Next.js'].map((t, i) => (
           <div key={t} className="glass rounded-full px-4 py-2 text-xs font-mono text-cyan-400/80 animate-float" style={{ animationDelay: `${i * 0.5}s` }}>
             <span className="text-white/40">[</span> {t} <span className="text-white/40">]</span>
           </div>
@@ -297,10 +305,10 @@ function Hero() {
           <span className="text-violet-400">{'>'}</span>{' '}
           <TypeAnimation
             sequence={[
-              'MERN Stack Developer', 2000,
-              'Spring Boot Developer', 2000,
-              'Next.js Developer', 2000,
-              'Building Modern Web Experiences', 2500,
+              'Building REST APIs with Spring Boot', 2000,
+              'Shipping web apps with Next.js', 2000,
+              'PostgreSQL · MySQL · Elasticsearch', 2000,
+              'Building software that solves real problems', 2500,
             ]}
             wrapper="span"
             speed={50}
@@ -377,10 +385,10 @@ function SectionTitle({ eyebrow, title, subtitle }) {
 // ----------------- ABOUT -----------------
 function About() {
   const items = [
-    { icon: Code2, title: 'MERN Stack', desc: 'MongoDB, Express, React, Node.js' },
-    { icon: Terminal, title: 'Spring Boot', desc: 'Robust enterprise Java backends' },
-    { icon: Zap, title: 'Workflow Automation', desc: 'Google Apps Script & beyond' },
-    { icon: Brain, title: 'Search & QA', desc: 'Elasticsearch + Testing rigour' },
+    { icon: Terminal, title: 'Java Backends', desc: 'Spring Boot and NestJS REST APIs' },
+    { icon: Code2, title: 'Full-Stack Web', desc: 'Next.js, React.js and Node.js' },
+    { icon: Brain, title: 'Data & Search', desc: 'PostgreSQL, MySQL, MongoDB, Elasticsearch' },
+    { icon: Zap, title: 'Tested & Shipped', desc: 'JUnit, Vitest, GitHub Actions, Docker' },
   ]
   return (
     <section id="about" className="relative py-32 overflow-hidden">
@@ -395,13 +403,13 @@ function About() {
             className="space-y-6"
           >
             <p className="text-lg text-white/80 leading-relaxed">
-              Software Developer with hands-on experience in <span className="text-cyan-400 font-semibold">MERN Stack</span>, <span className="text-violet-400 font-semibold">Spring Boot</span>, and modern web technologies.
+              Full-stack developer focused on <span className="text-cyan-400 font-semibold">Java backends</span>, building REST APIs and web apps with <span className="text-violet-400 font-semibold">Spring Boot, NestJS, Next.js and React.js</span>.
             </p>
             <p className="text-white/65 leading-relaxed">
-              Experienced as a <span className="text-white">Software Trainee</span> working on scalable applications, backend APIs, search optimization, workflow automation, and software testing.
+              As an intern at <span className="text-white">V-One Automation</span>, I built backend APIs for a real-estate platform and built and deployed <span className="text-white">MOM Pro</span>, the minutes-of-meeting app the team uses for its daily scrum.
             </p>
             <p className="text-white/65 leading-relaxed">
-              Passionate about creating impactful software solutions and continuously exploring emerging technologies.
+              B.E. Computer Science and Design graduate (2026) from Kongu Engineering College, now looking for a Java backend or full-stack role.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               {['Problem Solver', 'Team Player', 'Fast Learner', 'Detail-Oriented'].map(t => (
@@ -436,64 +444,79 @@ function About() {
 
 // ----------------- EXPERIENCE -----------------
 function Experience() {
-  const points = [
-    'Full-stack development using HTML, CSS, JavaScript, TypeScript, Vue.js',
-    'Backend development using Java and Spring Boot',
-    'SQL and Elasticsearch implementation',
-    'Workflow automation using Google Apps Script',
-    'Software Testing and QA',
-    'Team collaboration on product modules',
+  const jobs = [
+    {
+      period: 'May 2026 – Sep 2026',
+      role: 'Intern (Associate Software Developer)',
+      company: 'V-One Automation Solutions Pvt. Ltd.',
+      points: [
+        'Developed REST APIs for a real-estate listing platform with NestJS, TypeScript, PostgreSQL and Prisma, using optimistic locking and idempotency keys so concurrent edits and retried requests cannot overwrite or duplicate data.',
+        'Wrote unit and integration tests with Vitest and Supertest that run in GitHub Actions CI against a real PostgreSQL database, and packaged the API and worker as separate Docker images.',
+        'Built and deployed MOM Pro (Next.js, PostgreSQL, Prisma, on Vercel and Neon), an internal minutes-of-meeting app the team uses daily; tasks carry forward between meetings, so members update status instead of retyping it.',
+      ],
+    },
+    {
+      period: 'Feb 2026 – Apr 2026',
+      role: 'Software Trainee',
+      company: 'JPBP Offshore Private Limited (Restaurantware)',
+      points: [
+        'Trained in full-stack development with Java, Spring Boot, TypeScript, Vue.js, SQL and Elasticsearch.',
+        'Built a Product Catalog module as the final evaluation project, with product management screens and an Elasticsearch-backed catalog search.',
+      ],
+    },
   ]
   return (
     <section id="experience" className="relative py-32">
       <div className="max-w-5xl mx-auto px-6">
         <SectionTitle eyebrow="WORK HISTORY" title="Experience" />
-        <div className="relative">
+        <div className="relative space-y-16">
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-400 via-violet-500 to-transparent" />
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12"
-          >
-            <div className="hidden md:block md:text-right md:pr-12">
-              <div className="inline-flex items-center gap-2 font-mono text-xs text-cyan-400 mb-2">Feb 2026 – Apr 2026</div>
-              <h3 className="font-display text-2xl font-bold mb-1">Software Trainee</h3>
-              <p className="text-white/60">JPBP Offshore Private Limited</p>
-              <p className="text-white/40 text-sm">(Restaurantware)</p>
-            </div>
-            <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-cyan-400 ring-4 ring-cyan-400/20 pulse-glow" />
-            <div className="md:pl-12">
-              <div className="md:hidden mb-3">
-                <div className="inline-flex items-center gap-2 font-mono text-xs text-cyan-400 mb-1">Feb 2026 – Apr 2026</div>
-                <h3 className="font-display text-2xl font-bold">Software Trainee</h3>
-                <p className="text-white/60">JPBP Offshore Private Limited (Restaurantware)</p>
+          {jobs.map(job => (
+            <motion.div
+              key={job.company}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-12"
+            >
+              <div className="hidden md:block md:text-right md:pr-12">
+                <div className="inline-flex items-center gap-2 font-mono text-xs text-cyan-400 mb-2">{job.period}</div>
+                <h3 className="font-display text-2xl font-bold mb-1">{job.role}</h3>
+                <p className="text-white/60">{job.company}</p>
               </div>
-              <div className="glass-strong rounded-2xl p-6 hover:border-cyan-400/40 transition-all">
-                <div className="flex items-center gap-2 mb-4">
-                  <Briefcase size={16} className="text-cyan-400" />
-                  <span className="text-sm font-mono text-white/60">RESPONSIBILITIES</span>
+              <div className="absolute left-4 md:left-1/2 -translate-x-1/2 top-1 w-3 h-3 rounded-full bg-cyan-400 ring-4 ring-cyan-400/20 pulse-glow" />
+              <div className="md:pl-12">
+                <div className="md:hidden mb-3">
+                  <div className="inline-flex items-center gap-2 font-mono text-xs text-cyan-400 mb-1">{job.period}</div>
+                  <h3 className="font-display text-2xl font-bold">{job.role}</h3>
+                  <p className="text-white/60">{job.company}</p>
                 </div>
-                <ul className="space-y-3">
-                  {points.map((p, i) => (
-                    <li key={i}>
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.08 }}
-                        className="flex items-start gap-3 text-white/75 text-sm"
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 flex-shrink-0" />
-                        <span>{p}</span>
-                      </motion.div>
-                    </li>
-                  ))}
-                </ul>
+                <div className="glass-strong rounded-2xl p-6 hover:border-cyan-400/40 transition-all">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Briefcase size={16} className="text-cyan-400" />
+                    <span className="text-sm font-mono text-white/60">WHAT I DID</span>
+                  </div>
+                  <ul className="space-y-3">
+                    {job.points.map((p, i) => (
+                      <li key={i}>
+                        <motion.div
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.08 }}
+                          className="flex items-start gap-3 text-white/75 text-sm leading-relaxed"
+                        >
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 flex-shrink-0" />
+                          <span>{p}</span>
+                        </motion.div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -503,11 +526,11 @@ function Experience() {
 // ----------------- SKILLS -----------------
 function Skills() {
   const categories = [
-    { name: 'Programming', items: ['Java', 'Python', 'C'] },
-    { name: 'Frontend', items: ['HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React.js', 'Next.js'] },
-    { name: 'Backend', items: ['Node.js', 'Express.js', 'Spring Boot'] },
-    { name: 'Database', items: ['SQL', 'MongoDB', 'Elasticsearch'] },
-    { name: 'Tools', items: ['Git', 'GitHub', 'Docker', 'Postman', 'Figma', 'Google Sheets', 'Google Apps Script'] },
+    { name: 'Languages', items: ['Java', 'Python', 'C', 'JavaScript', 'TypeScript'] },
+    { name: 'Frontend', items: ['React.js', 'Next.js', 'HTML5', 'CSS3'] },
+    { name: 'Backend', items: ['Spring Boot', 'NestJS', 'Node.js', 'Express.js', 'REST API Development'] },
+    { name: 'Databases', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Elasticsearch'] },
+    { name: 'Testing and Tools', items: ['JUnit', 'Vitest', 'Git', 'GitHub Actions', 'Docker', 'Vercel', 'Postman', 'Prisma'] },
   ]
   return (
     <section id="skills" className="relative py-32 overflow-hidden">
@@ -516,7 +539,7 @@ function Skills() {
         <div className="grid lg:grid-cols-5 gap-8 items-center">
           <div className="lg:col-span-3 h-[500px] md:h-[600px] glass-strong rounded-3xl overflow-hidden relative">
             <Suspense fallback={<div className="flex items-center justify-center h-full text-white/40">Loading galaxy...</div>}>
-              <SkillsGalaxy />
+              <WhenVisible><SkillsGalaxy /></WhenVisible>
             </Suspense>
             <div className="absolute bottom-4 left-4 text-xs font-mono text-white/40">Drag to rotate • Hover nodes</div>
           </div>
@@ -581,6 +604,13 @@ function ProjectCard({ project, index }) {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10" />
             <div className="absolute inset-0 grid-bg opacity-30" />
+            {project.images ? (
+              <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-1 p-1">
+                {project.images.map(src => (
+                  <img key={src} src={src} alt="" loading="lazy" className="w-full h-full object-cover rounded-[1.25rem] opacity-90 group-hover:opacity-100 transition-opacity" />
+                ))}
+              </div>
+            ) : (<>
             {/* Mock browser */}
             <div className="absolute top-4 left-4 right-4 h-7 rounded-md bg-white/5 border border-white/10 flex items-center px-3 gap-1.5">
               <span className="w-2 h-2 rounded-full bg-red-400/60" />
@@ -618,6 +648,7 @@ function ProjectCard({ project, index }) {
                 ))}
               </div>
             </div>
+            </>)}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-cyan-400/5" />
           </div>
           <div className="absolute -inset-4 -z-10 bg-gradient-to-r from-cyan-400/20 to-violet-500/20 blur-3xl opacity-60" />
@@ -640,26 +671,31 @@ function ProjectCard({ project, index }) {
               </li>
             ))}
           </ul>
-          <div className="flex gap-3">
-            <MagneticButton
-              as="a"
-              href={project.live || ''}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 text-black text-sm font-semibold hover:shadow-[0_0_25px_rgba(0,212,255,0.5)] transition-all"
-            >
-              <ExternalLink size={15} /> Live Preview
-            </MagneticButton>
-            <MagneticButton
-              as="a"
-              href={project.github || '#'}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-strong text-sm hover:border-cyan-400/40 transition-all"
-            >
-              <FaGithub size={15} /> GitHub
-            </MagneticButton>
+          <div className="flex flex-wrap gap-3">
+            {project.live && (
+              <MagneticButton
+                as="a"
+                href={project.live}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 text-black text-sm font-semibold hover:shadow-[0_0_25px_rgba(0,212,255,0.5)] transition-all"
+              >
+                <ExternalLink size={15} /> {project.liveLabel || 'Live Preview'}
+              </MagneticButton>
+            )}
+            {project.github && (
+              <MagneticButton
+                as="a"
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-strong text-sm hover:border-cyan-400/40 transition-all"
+              >
+                <FaGithub size={15} /> GitHub
+              </MagneticButton>
+            )}
           </div>
+          {project.note && <p className="mt-3 text-xs text-white/40">{project.note}</p>}
         </div>
       </div>
     </motion.div>
@@ -669,42 +705,75 @@ function ProjectCard({ project, index }) {
 function Projects() {
   const projects = [
     {
-      title: 'Notes App',
-      url: 'notes-app.dev',
-      icon: Code2,
-      description: 'A modern note-taking application built with the MERN stack. Authenticated users can create, organize, search, and tag notes with a fully responsive UI.',
-      tech: ['MongoDB', 'Express', 'React', 'Node.js'],
-      features: ['Authentication & JWT', 'Full CRUD Operations', 'Tagging & Categorization', 'Powerful Search', 'Responsive Design'],
+      title: 'MOM Pro – Minutes of Meeting',
+      url: 'vone-mom-pro.vercel.app',
+      icon: Briefcase,
+      description: "An internal minutes-of-meeting app I built and deployed for the V-One team's daily scrum. Tasks belong to the project, not the meeting, so pending work carries forward on its own and members update status instead of retyping it.",
+      tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Auth.js', 'Vercel', 'Neon'],
+      features: ['Tasks carry forward between meetings', 'Password and Google sign-in with admin approval', 'Word and PDF export of minutes', 'Used by the team for its daily meetings'],
       stats: [
-        { value: '100%', label: 'Auth Secure' },
-        { value: 'CRUD', label: 'Operations' },
-        { value: 'Tags', label: 'Smart Org' },
+        { value: 'Daily', label: 'Team use' },
+        { value: 'Auth', label: 'Approval flow' },
+        { value: 'Export', label: 'Word & PDF' },
       ],
-      github: 'https://github.com/Ramprasanth7119/notes_app',
-      live: 'https://notes-app-rho-hazel.vercel.app/',
+      live: 'https://vone-mom-pro.vercel.app/',
+      liveLabel: 'Live App',
+      note: 'Internal tool: the live app needs a team login, and the source is private.',
     },
     {
       title: 'iHub – Idea Bidding Platform',
-      url: 'ihub.platform',
+      url: 'ihub-wheat.vercel.app',
       icon: Rocket,
-      description: 'A premium marketplace where innovators post ideas and bidders compete in auctions. Powered by Spring Boot, Elasticsearch, and Next.js for real-time discovery.',
-      tech: ['Spring Boot', 'MySQL', 'Elasticsearch', 'Next.js'],
-      features: ['Idea Posting & Discovery', 'Live Bidding System', 'Auction Mechanics', 'REST APIs', 'Search & Filtering', 'Real-Time Updates'],
+      description: 'A platform for idea creators and investors with timed auctions and live bidding. MySQL is the source of truth, and ideas are indexed into Elasticsearch for keyword search and category filters.',
+      tech: ['Java', 'Spring Boot', 'MySQL', 'Elasticsearch', 'Next.js', 'Docker'],
+      features: ['Spring Boot REST APIs with JWT authentication', 'Live bid updates over WebSocket', 'Auction row locked per bid, so two simultaneous bids cannot both win', 'JUnit tests run in GitHub Actions CI'],
       stats: [
-        { value: '⚡', label: 'Real-time' },
+        { value: 'Live', label: 'Bidding' },
         { value: 'ES', label: 'Search' },
-        { value: 'REST', label: 'APIs' },
+        { value: 'CI', label: 'JUnit' },
       ],
       github: 'https://github.com/Ramprasanth7119/ihub',
       live: 'https://ihub-wheat.vercel.app/',
+    },
+    {
+      title: 'Cinematic Web Experiences',
+      url: 'cinematic-web-experiences.vercel.app',
+      icon: Sparkles,
+      images: ['/projects/glorious-purpose.jpg', '/projects/infinity-portfolio.jpg', '/projects/timeline-tree.jpg', '/projects/jarvis-ui.jpg'],
+      description: 'A gallery of four browser experiences: an interactive short film, a 3D Infinity Gauntlet portfolio, a generative timeline tree and an AI console. Every frame is generated live from code, with no video, image or 3D model files.',
+      tech: ['Three.js', 'GLSL', 'Canvas 2D', 'Web Audio', 'Next.js'],
+      features: ['Glorious Purpose: a scrubbable interactive film', 'Infinity Portfolio: six shader gems and a procedural gauntlet', 'Timeline Tree: a cosmic tree grown stage by stage', 'JARVIS: an AI console that visualises its thinking'],
+      stats: [],
+      github: 'https://github.com/Ramprasanth7119/cinematic-web-experiences',
+      live: 'https://cinematic-web-experiences.vercel.app/',
+    },
+    {
+      title: 'Notes App',
+      url: 'notes-app-rho-hazel.vercel.app',
+      icon: Code2,
+      description: 'A MERN notes app with JWT authentication in httpOnly cookies and per-user data ownership. Server-side search uses a MongoDB text index scoped to each user that ranks titles above content.',
+      tech: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'Vitest'],
+      features: ['JWT auth in httpOnly cookies', 'Per-user data ownership', 'Tagging and file attachments', 'Auth, ownership, validation and search covered by Vitest and Supertest tests'],
+      stats: [
+        { value: 'JWT', label: 'Auth' },
+        { value: 'Search', label: 'Text index' },
+        { value: 'Tests', label: 'Vitest' },
+      ],
+      github: 'https://github.com/Ramprasanth7119/notes_app',
+      live: 'https://notes-app-rho-hazel.vercel.app/',
     },
   ]
 
   return (
     <section id="projects" className="relative py-32">
       <div className="max-w-6xl mx-auto px-6">
-        <SectionTitle eyebrow="WORK" title="Featured Projects" subtitle="Selected work that demonstrates engineering rigour, product thinking, and craft." />
+        <SectionTitle eyebrow="WORK" title="Featured Projects" subtitle="Things I have built and shipped, at work and on my own." />
         {projects.map((p, i) => <ProjectCard key={p.title} project={p} index={i} />)}
+        <div className="text-center mt-8">
+          <a href="https://github.com/Ramprasanth7119" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-all">
+            <FaGithub size={15} /> More on GitHub <ArrowRight size={14} />
+          </a>
+        </div>
       </div>
     </section>
   )
@@ -714,11 +783,11 @@ function Projects() {
 function EarthSection() {
   return (
     <section className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0">
+      <WhenVisible className="absolute inset-0">
         <Suspense fallback={null}>
           <Earth />
         </Suspense>
-      </div>
+      </WhenVisible>
       <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <motion.div
@@ -745,17 +814,17 @@ function Education() {
   const items = [
     {
       institution: 'Kongu Engineering College',
-      degree: 'B.E Computer Science and Design',
+      degree: 'B.E. Computer Science and Design',
       detail: 'Honors in Data Science',
       meta: 'CGPA: 8.11',
       period: '2022 – 2026',
     },
     {
       institution: 'Shri Vidhyabharathi Matric School',
-      degree: 'Higher Secondary Certificate (HSC)',
-      detail: 'Score: 93.5%',
+      degree: 'Higher Secondary and Secondary Education',
+      detail: 'HSC: 93.5%',
       meta: 'SSLC: 98.4%',
-      period: 'Schooling',
+      period: '2019 – 2022',
     },
   ]
   return (
@@ -796,8 +865,8 @@ function Education() {
 // ----------------- CERTIFICATIONS -----------------
 function Certifications() {
   const certs = [
-    { title: 'Web Development Training', issuer: 'Internshala', year: '2024', color: 'from-cyan-400 to-blue-500' },
-    { title: 'Wipro Java Certification', issuer: 'Wipro', year: '2025', color: 'from-violet-500 to-pink-500' },
+    { title: 'Full Stack Web Development with AI', issuer: 'Internshala', year: 'Apr 2024', color: 'from-cyan-400 to-blue-500' },
+    { title: 'Java Certification', issuer: 'Wipro', year: 'Oct 2025', color: 'from-violet-500 to-pink-500' },
   ]
   return (
     <section id="certifications" className="relative py-24">
@@ -858,8 +927,8 @@ function Counter({ value, suffix = '' }) {
 
 function Achievements() {
   const items = [
-    { label: 'Projects Built', value: '2', suffix: '+' },
-    { label: 'Technologies', value: '15', suffix: '+' },
+    { label: 'Internships', value: '2', suffix: '' },
+    { label: 'Live Projects', value: '4', suffix: '' },
     { label: 'CGPA', value: '8.11', suffix: '' },
     { label: 'Years of Learning', value: '4', suffix: '+' },
   ]
@@ -1023,12 +1092,12 @@ function CodingTerminal() {
           </div>
           <div className="p-6 font-mono text-sm space-y-2">
             <div><span className="text-green-400">➜</span> <span className="text-cyan-400">whoami</span></div>
-            <div className="text-white/80 pl-4">Software Developer · MERN · Spring Boot · Next.js</div>
+            <div className="text-white/80 pl-4">Java Backend & Full-Stack Developer · Spring Boot · NestJS · Next.js</div>
             <div><span className="text-green-400">➜</span> <span className="text-cyan-400">ls</span> skills/</div>
             <div className="text-white/80 pl-4 grid grid-cols-3 gap-x-4">
-              <span>java</span><span>react</span><span>spring-boot</span>
-              <span>nodejs</span><span>nextjs</span><span>elasticsearch</span>
-              <span>mongodb</span><span>docker</span><span>typescript</span>
+              <span>java</span><span>spring-boot</span><span>nestjs</span>
+              <span>nextjs</span><span>react</span><span>typescript</span>
+              <span>postgresql</span><span>elasticsearch</span><span>docker</span>
             </div>
             <div><span className="text-green-400">➜</span> <span className="text-cyan-400">cat</span> mission.txt</div>
             <div className="text-violet-300 pl-4">"Build software that solves real problems — beautifully."</div>
@@ -1113,7 +1182,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center font-display font-bold text-black text-sm">R</div>
-          <span className="text-white/60 text-sm">© 2025 Ramprasanth Sakthivel. Crafted with passion.</span>
+          <span className="text-white/60 text-sm">© 2026 Ramprasanth Sakthivel</span>
         </div>
         <div className="flex items-center gap-4">
           <a href="https://github.com/Ramprasanth7119" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub profile" title="Open GitHub profile" className="text-white/50 hover:text-cyan-400 transition"><FaGithub size={18} /></a>
@@ -1222,78 +1291,6 @@ function Spotlight() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map(f => (
             <SpotlightCard key={f.title} {...f} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ----------------- TESTIMONIALS -----------------
-function Testimonials() {
-  const items = [
-    {
-      quote: "Ramprasanth picked up our Spring Boot codebase in days and shipped Elasticsearch-powered search that cut query times by 60%. Rare combination of speed and quality.",
-      name: 'Tech Lead',
-      role: 'JPBP Offshore (Restaurantware)',
-      avatar: 'TL',
-      color: 'from-cyan-400 to-blue-500',
-    },
-    {
-      quote: "Calm under pressure, ridiculously curious, and writes code you actually want to read. Refactored half our workflow scripts and saved the team hours every week.",
-      name: 'Senior Engineer',
-      role: 'Product Team',
-      avatar: 'SE',
-      color: 'from-violet-500 to-pink-500',
-    },
-    {
-      quote: "From wireframe to deployment, he owns it end-to-end. The iHub bidding platform he architected handled real-time updates flawlessly during demo day.",
-      name: 'Project Mentor',
-      role: 'Kongu Engineering College',
-      avatar: 'PM',
-      color: 'from-teal-400 to-cyan-500',
-    },
-    {
-      quote: "If you want someone who treats every commit like a craft and every UI like a story — this is your developer. We could not be happier with the collaboration.",
-      name: 'Client',
-      role: 'Freelance Project',
-      avatar: 'CL',
-      color: 'from-orange-400 to-pink-500',
-    },
-  ]
-  return (
-    <section className="relative py-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <SectionTitle eyebrow="KIND WORDS" title="Testimonials" subtitle="What collaborators, mentors, and teammates say about working with me." />
-        <div className="grid md:grid-cols-2 gap-6">
-          {items.map((t, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: i * 0.1, duration: 0.6 }}
-              whileHover={{ y: -8 }}
-              className="group glass-strong rounded-3xl p-8 relative overflow-hidden hover:border-cyan-400/30 transition-all"
-            >
-              <div className={`absolute -top-16 -right-16 w-44 h-44 rounded-full bg-gradient-to-br ${t.color} opacity-20 blur-3xl group-hover:opacity-40 transition-opacity`} />
-              <div className="relative">
-                <div className="text-6xl font-display text-cyan-400/30 leading-none mb-2">&ldquo;</div>
-                <p className="text-white/80 leading-relaxed mb-6 -mt-4">{t.quote}</p>
-                <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center font-display font-bold text-black`}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-white">{t.name}</div>
-                    <div className="text-xs text-white/50">{t.role}</div>
-                  </div>
-                  <div className="ml-auto flex items-center gap-0.5">
-                    {[0,1,2,3,4].map(n => <Star key={n} size={12} className="text-yellow-400 fill-yellow-400" />)}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
           ))}
         </div>
       </div>
